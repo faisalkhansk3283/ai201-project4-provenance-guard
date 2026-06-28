@@ -282,6 +282,19 @@ Creators submit `POST /verify` with a written statement of authorship. Verified 
 ### Multi-modal Support
 `/submit` accepts an optional `content_type` field (`"text"` or `"image_description"`). Image descriptions are shorter and more structured — the same pipeline applies with content type awareness.
 
+**How the pipeline handles image descriptions:** All three signals run on the text of the description. Short captions naturally have low sentence variance — Signal 2 (stylometric) is less reliable for very short descriptions, so the system defaults to uncertain more often. Signal 1 (LLM) carries more weight for short content.
+
+**Demo — image description submission:**
+```json
+{
+  "text": "Oil on canvas, 24x36 inches. A lighthouse stands at dusk against a dramatic sky...",
+  "content_type": "image_description",
+  "confidence": 0.7,
+  "attribution": "uncertain",
+  "label": "❓ Uncertain"
+}
+```
+
 ---
 
 ## Known Limitations
