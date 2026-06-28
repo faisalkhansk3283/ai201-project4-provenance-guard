@@ -317,9 +317,17 @@ Non-native speakers often write in patterns that resemble AI — consistent gram
 
 ## AI Usage
 
-**Instance 1:** Used AI to generate the Flask app skeleton and SQLite database setup. Reviewed output carefully — corrected `row_factory` usage and added `exist_ok=True` to directory creation.
+**Instance 1:** Directed AI to generate the Flask app skeleton and SQLite database setup using our architecture diagram and API contract from `planning.md` as input. The output included a working `/submit` route and `init_db()` function. Revised: corrected `row_factory = sqlite3.Row` usage (AI used index-based row access), added `os.makedirs(exist_ok=True)` before the file write (AI placed it after, which would crash on first run), and added `try/except` blocks around all signal functions which AI omitted.
 
-**Instance 2:** Used AI to help design the stylometric scoring formula. Overrode the suggested equal weighting (50/50) in favor of weighted approach (55/35/10) based on signal reliability at different text lengths.
+**Instance 2:** Directed AI to design the stylometric scoring formula — combining sentence length variance and type-token ratio into a single 0-1 score. AI suggested equal weighting (50/50) between the two metrics and equal signal weights (33/33/33) across all three signals. Overrode both: changed signal weights to 55/35/10 based on our reasoning that LLM is most holistic and informality is too narrow for formal writers. Also added a short-text fallback (`return 0.5` when fewer than 2 sentences) which AI omitted — discovered this gap during testing when single-sentence inputs caused a division by zero error.
+
+---
+
+## Video Walkthrough
+
+Here's a walkthrough of implemented required features:
+
+<img src='https://imgur.com/a/3rvOcQ4.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 ---
 
